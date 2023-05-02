@@ -19,11 +19,7 @@ class CaseInsensitiveDict:
         if existing:
             del self.dict[existing]
         self.dict[key] = value
-        # self.dict = {'Akali': 'perfect execution', 'Jhin': 4, 'Snake': 5}
 
-    # I need this method to look in self.dict for an existing key
-    # if it exists, overwrite with the __setitem__() args
-    # if it doesn't, just add one
 
 if __name__ == '__main__':
     myinstance = CaseInsensitiveDict()
