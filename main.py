@@ -14,9 +14,9 @@ import csv
 
 x = 0
 y = 0
-location = None
+location = {}
 inventory = {}
-shouldprint = True
+should_print = True
 
 
 class Item:
@@ -38,7 +38,7 @@ def passfunc():
 
 
 def main():
-    global shouldprint
+    global should_print
     global location
     location = parse_game_data()
     print('Welcome to the game.')
@@ -47,13 +47,13 @@ def main():
     userinput = ''
     while userinput != 'Quit':
         curr = location[(x, y)]
-        if shouldprint:
+        if should_print:
             print(curr.title)
             print(curr.description)
             for i in curr.items:
                 print(curr.items[i].setting)
-            shouldprint = False
-            # if shouldprint were not set to false after this while loop, the location title, description,
+            should_print = False
+            # if should_print were not set to false after this while loop, the location title, description,
             # and item setting would print after every command
         userinput = input('>>> ')
         check_input(userinput)
@@ -77,7 +77,7 @@ def pick_up(userinput):
     print(f"There's no {item} here.")
 
 
-def inventory_func(userinput):
+def inventory_func(_):
     out = 'Your inventory contains: '
     sep = ', '.join(inventory.keys())
     print(out + sep + '.')
@@ -94,48 +94,48 @@ def examine(userinput):
             print(inventory[i])
 
 
-def go_left(userinput):
-    global shouldprint
+def go_left(_):
+    global should_print
     global x
     if (x - 1, y) in location:
         x = x - 1
-        shouldprint = True
+        should_print = True
     else:
         print("You can't do that.")
 
 
-def go_right(userinput):
-    global shouldprint
+def go_right(_):
+    global should_print
     global x
     if (x + 1, y) in location:
         x = x + 1
-        shouldprint = True
+        should_print = True
     else:
         print("You can't do that.")
 
 
-def go_up(userinput):
-    global shouldprint
+def go_up(_):
+    global should_print
     global y
     if (x, y + 1) in location:
         y = y + 1
-        shouldprint = True
+        should_print = True
     else:
         print("You can't do that.")
 
 
-def go_down(userinput):
-    global shouldprint
+def go_down(_):
+    global should_print
     global y
     if (x, y - 1) in location:
         y = y - 1
-        shouldprint = True
+        should_print = True
     else:
         print("You can't do that.")
 
 
 def check_input(userinput):
-    global shouldprint
+    global should_print
     global location
     global x
     global y
@@ -156,8 +156,8 @@ def parse_game_data(filename='gamedata.csv'):
     csvreader = csv.reader(datafile)
     locations = {}
     for line in csvreader:
-        x = int(line[1])
-        y = int(line[2])
+        this_x = int(line[1])
+        this_y = int(line[2])
         items = line[5:]
         itemsdict = {}
         if len(items) > 1:
@@ -166,8 +166,8 @@ def parse_game_data(filename='gamedata.csv'):
                 itemsetting = items[i+1]
                 itemdescription = items[i+2]
                 itemsdict[itemname] = Item(itemname, itemdescription, itemsetting)
-        locations[(x, y)] = Location(line[3], line[4], itemsdict)
-        #locations = {
+        locations[(this_x, this_y)] = Location(line[3], line[4], itemsdict)
+        # locations = {
         #             (0,0): Location
         #                     title=...
         #                     description=...

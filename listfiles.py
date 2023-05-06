@@ -1,5 +1,6 @@
 import os
 
+
 def main():
     entries = os.listdir()
     print(f'The list is: {entries}')
