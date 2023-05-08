@@ -135,12 +135,9 @@ def go_down(_):
 
 
 def check_input(userinput):
-    global should_print
-    global location
-    global x
-    global y
-    functionmap = {'Inventory': inventory_func, 'Location': passfunc, 'Pick up': pick_up, 'Use': passfunc,
-                   'Examine': examine, 'Go left': go_left, 'Go right': go_right, 'Go up': go_up,
+    functionmap = {'Inventory': inventory_func, 'Location': passfunc,
+                   'Pick up': pick_up, 'Use': passfunc, 'Examine': examine,
+                   'Go left': go_left, 'Go right': go_right, 'Go up': go_up,
                    'Go down': go_down}
     for i in functionmap:
         if userinput.startswith(i):
