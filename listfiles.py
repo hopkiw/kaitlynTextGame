@@ -1,18 +1,25 @@
 import os
 
 
-def print_directory_entries(dirname):
+def print_directory_entries(dir_name):
     # dirname =
-    entries = os.listdir(dirname)
-    print(f'The list is: {entries}')
+    print(dir_name)
+    entries = os.listdir(dir_name)
+    files = []
+    directories = []
     for entry in entries:
-        entrypath = dirname + '/' + entry
-        if os.path.isdir(entrypath):
-            print(f'{entrypath} is a directory')
-            print_directory_entries(entrypath)
+        entry_path = dir_name + '/' + entry
+        if os.path.isdir(entry_path):
+            directories.append(entry_path)
         else:
-            print(f'{entrypath} is not a directory')
+            files.append(entry)
+    for file in files:
+        print(file)
+    for directory in directories:
+        print_directory_entries(directory)
 
 
 if __name__ == '__main__':
-    print_directory_entries('/Users/kaitlynmodz/PycharmProjects/dirtest')
+    # print_directory_entries('/Users/kaitlynmodz/PycharmProjects/dirtest')
+    print_directory_entries('/')
+
