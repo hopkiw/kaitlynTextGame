@@ -1,15 +1,18 @@
 import os
 
 
-def main():
-    entries = os.listdir()
+def print_directory_entries(dirname):
+    # dirname =
+    entries = os.listdir(dirname)
     print(f'The list is: {entries}')
     for entry in entries:
-        if os.path.isdir(entry):
-            print(f'{entry} is a directory')
+        entrypath = dirname + '/' + entry
+        if os.path.isdir(entrypath):
+            print(f'{entrypath} is a directory')
+            print_directory_entries(entrypath)
         else:
-            print(f'{entry} is not a directory')
+            print(f'{entrypath} is not a directory')
 
 
 if __name__ == '__main__':
-    main()
+    print_directory_entries('/Users/kaitlynmodz/PycharmProjects/dirtest')
