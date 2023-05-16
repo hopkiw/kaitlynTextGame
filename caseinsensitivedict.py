@@ -1,6 +1,6 @@
 class CaseInsensitiveDict:
     def __init__(self):
-        self.dict = {'Akali': 'perfect execution', 'Jhin': 4}
+        self.dict = {}
 
     def __getitem__(self, key):
         print('I was called.')
@@ -19,6 +19,10 @@ class CaseInsensitiveDict:
         if existing:
             del self.dict[existing]
         self.dict[key] = value
+    def __iter__(self):
+        return iter(self.dict)
+    def __len__(self):
+        return len(self.dict)
 
 
 if __name__ == '__main__':
