@@ -23,6 +23,26 @@ class CaseInsensitiveDict:
         return iter(self.dict)
     def __len__(self):
         return len(self.dict)
+    def __delitem__(self, key):
+        existing = None
+        for i in self.dict:
+            if i.lower() == key.lower():
+                existing = i
+                break
+        if existing:
+            del self.dict[existing]
+        else:
+            raise KeyError
+    def __eq__(self, other):
+        for i in self:
+            self_value = self[i]
+            if i in other:
+                other_value = other[i]
+            else:
+                return False
+            if self_value != other_value:
+                return False
+        return True
 
 
 if __name__ == '__main__':

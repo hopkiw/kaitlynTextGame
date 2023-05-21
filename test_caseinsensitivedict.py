@@ -30,30 +30,38 @@ class TestCaseInsensitiveDict(TestCase):
         self.assertEqual(len(myinstance), 2)
 
     def test_remaining(self):
-        pass
         # del d[key]
         #     Remove d[key] from d. Raises a KeyError if key is not in the map.
 
-        # myinstance = CaseInsensitiveDict()
-        # myinstance['Kaisa'] = 5
-        # self.assertEqual(myinstance['Kaisa'], 5)
-        # del myinstance['Kaisa']
-        # self.assertNotIn('Kaisa', myinstance)
-        # with self.assertRaises(KeyError):
-        #     myinstance['Kaisa']
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        self.assertEqual(myinstance['Kaisa'], 5)
+        del myinstance['Kaisa']
+        self.assertNotIn('Kaisa', myinstance)
+        with self.assertRaises(KeyError):
+            myinstance['Kaisa']
 
         # key in d
         #     Return True if d has a key key, else False.
 
-        # myinstance = CaseInsensitiveDict()
-        # myinstance['Kaisa'] = 5
-        # self.assertIn('Kaisa', myinstance)
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        # self.assertNotIn('Kaisa', myinstance)
+        isin = 'Kaisa' in myinstance
+        self.assertEqual(True, isin)
 
         # key not in d
         #     Equivalent to not key in d.
 
         # clear()
         #     Remove all items from the dictionary.
+
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        self.assertIn('Kaisa', myinstance)
+        self.assertEqual(myinstance, {'Kaisa': 5})
+        # myinstance.clear()
+        # self.assertEqual(myinstance, {})
 
         # copy()
         #     Return a copy of the dictionary, a new instance with the same
