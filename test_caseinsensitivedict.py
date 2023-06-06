@@ -29,10 +29,7 @@ class TestCaseInsensitiveDict(TestCase):
         myinstance['Kaisa'] = 5
         self.assertEqual(len(myinstance), 2)
 
-    def test_remaining(self):
-        # del d[key]
-        #     Remove d[key] from d. Raises a KeyError if key is not in the map.
-
+    def test_del(self):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
         self.assertEqual(myinstance['Kaisa'], 5)
@@ -41,31 +38,29 @@ class TestCaseInsensitiveDict(TestCase):
         with self.assertRaises(KeyError):
             myinstance['Kaisa']
 
-        # key in d
-        #     Return True if d has a key key, else False.
-
+    def test_keyin(self):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
-        # self.assertNotIn('Kaisa', myinstance)
-        isin = 'Kaisa' in myinstance
-        self.assertEqual(True, isin)
+        self.assertIn('Kaisa', myinstance)
 
-        # key not in d
-        #     Equivalent to not key in d.
+    def test_keynotin(self):
+        myinstance = CaseInsensitiveDict()
+        self.assertNotIn('Jhin', myinstance)
 
-        # clear()
-        #     Remove all items from the dictionary.
-
+    def test_clear(self):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
         self.assertIn('Kaisa', myinstance)
         self.assertEqual(myinstance, {'Kaisa': 5})
-        # myinstance.clear()
-        # self.assertEqual(myinstance, {})
+        myinstance.clear()
+        self.assertEqual(myinstance, {})
 
-        # copy()
-        #     Return a copy of the dictionary, a new instance with the same
-        #     items.
+    def test_copy(self):
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        self.assertIn('Kaisa', myinstance)
+        mysecondinstance = myinstance.copy()
+        self.assertEqual(myinstance, mysecondinstance)
 
         # get(key[, default])
         #     Return the value for key if key is in the dictionary, else
@@ -78,6 +73,13 @@ class TestCaseInsensitiveDict(TestCase):
 
         # keys()
         #     Return the dictionary’s keys.
+
+    def test_keys(self):
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        self.assertIn('Kaisa', myinstance)
+        keys = myinstance.keys()
+        self.assertIn('Kaisa', keys)
 
         # pop(key[, default])
         #     If key is in the dictionary, remove it and return its value, else

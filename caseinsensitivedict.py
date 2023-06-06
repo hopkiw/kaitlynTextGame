@@ -19,10 +19,13 @@ class CaseInsensitiveDict:
         if existing:
             del self.dict[existing]
         self.dict[key] = value
+
     def __iter__(self):
         return iter(self.dict)
+
     def __len__(self):
         return len(self.dict)
+
     def __delitem__(self, key):
         existing = None
         for i in self.dict:
@@ -33,6 +36,7 @@ class CaseInsensitiveDict:
             del self.dict[existing]
         else:
             raise KeyError
+
     def __eq__(self, other):
         for i in self:
             self_value = self[i]
@@ -43,6 +47,22 @@ class CaseInsensitiveDict:
             if self_value != other_value:
                 return False
         return True
+
+    def clear(self):
+        self.dict = {}
+
+    def copy(self):
+        myinstance = CaseInsensitiveDict()
+        for key in self:
+            myinstance[key] = self[key]
+        return myinstance
+
+    def keys(self):
+        myinstance = CaseInsensitiveDict()
+        keylist = []
+        for key in myinstance:
+            keylist.append(key)
+        return keylist
 
 
 if __name__ == '__main__':
