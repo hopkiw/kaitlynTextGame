@@ -61,6 +61,7 @@ class TestCaseInsensitiveDict(TestCase):
         self.assertIn('Kaisa', myinstance)
         mysecondinstance = myinstance.copy()
         self.assertEqual(myinstance, mysecondinstance)
+        self.assertFalse(myinstance is mysecondinstance)
 
         # get(key[, default])
         #     Return the value for key if key is in the dictionary, else
@@ -71,8 +72,18 @@ class TestCaseInsensitiveDict(TestCase):
         #     Return a new view of the dictionary’s items ((key, value) pairs).
         #     See the documentation of view objects.
 
-        # keys()
-        #     Return the dictionary’s keys.
+    def test_items(self):
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        myinstance['Jhin'] = 4
+        self.assertIn('Kaisa', myinstance)
+        self.assertIn('Jhin', myinstance)
+        items_list = []
+        for i in myinstance:
+            t = (i, myinstance[i])
+            items_list.append(t)
+        self.assertIn(('Kaisa', 5), items_list)
+        self.assertIn(('Jhin', 4), items_list)
 
     def test_keys(self):
         myinstance = CaseInsensitiveDict()
@@ -107,3 +118,11 @@ class TestCaseInsensitiveDict(TestCase):
         # values()
         #     Return a new view of the dictionary’s values. See the documentation
         #     of view objects.
+
+    def test_values(self):
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        self.assertIn('Kaisa', myinstance)
+        values = myinstance.values()
+        print(f'values is {values}')
+        self.assertIn(5, values)

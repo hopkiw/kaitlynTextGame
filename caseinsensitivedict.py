@@ -58,11 +58,25 @@ class CaseInsensitiveDict:
         return myinstance
 
     def keys(self):
+        key_list = []
+        for key in self:
+            key_list.append(key)
+            return key_list
+
+    def values(self):
         myinstance = CaseInsensitiveDict()
-        keylist = []
-        for key in myinstance:
-            keylist.append(key)
-        return keylist
+        value_list = []
+        for key in self:
+            value_list.append(key)
+        return value_list
+
+    def items(self):
+        myinstance = CaseInsensitiveDict()
+        items_list = []
+        for i in myinstance():
+            t = (i, myinstance[i])
+            items_list.append(t)
+        return items_list
 
 
 if __name__ == '__main__':
