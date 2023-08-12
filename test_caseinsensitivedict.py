@@ -70,17 +70,15 @@ class TestCaseInsensitiveDict(TestCase):
     def test_get(self):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
+        myinstance['kaisa'] = 5
         self.assertIn('Kaisa', myinstance)
         self.assertNotIn('Jhin', myinstance)
         value = myinstance.get('Kaisa')
         nonvalue = myinstance.get('Jhin')
         self.assertEqual(value, 5)
         self.assertEqual(nonvalue, None)
+        self.assertEqual(myinstance['kaisa'], 5)
 
-
-        # items()
-        #     Return a new view of the dictionary’s items ((key, value) pairs).
-        #     See the documentation of view objects.
 
     def test_items(self):
         myinstance = CaseInsensitiveDict()
@@ -115,13 +113,21 @@ class TestCaseInsensitiveDict(TestCase):
         myinstance['Kaisa'] = 5
         self.assertIn('Kaisa', myinstance)
         item = myinstance.popitem()
-        self.assertIs(item, ('Kaisa', 5))
+        self.assertEqual(item, ('Kaisa', 5))
         self.assertNotIn(item, myinstance)
 
         # setdefault(key[, default])
         #     If key is in the dictionary, return its value. If not, insert key
         #     with a value of default and return default.  default defaults to
         #     None.
+
+    def test_setdefault(self):
+        myinstance = CaseInsensitiveDict()
+        myinstance['Kaisa'] = 5
+        item = myinstance.setdefault('Kaisa')
+        self.assertEqual(item, 5)
+        default_item = myinstance.setdefault('Jhin')
+        self.assertEqual(default_item, None)
 
         # update([other])
         #     Update the dictionary with the key/value pairs from other,

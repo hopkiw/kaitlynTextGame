@@ -78,17 +78,23 @@ class CaseInsensitiveDict:
         return items_list
 
     def popitem(self):
-        myinstance = CaseInsensitiveDict()
-        for key in myinstance:
-            value = myinstance[key]
+        for key in self.dict:
+            value = self.dict[key]
             item = (key, value)
-            myinstance.popitem(item)
             return item
 
     def get(self, key, default=None):
         if key in self.dict:
             return self.dict[key]
         else:
+            return default
+
+    def setdefault(self, key, default=None):
+        if key in self.dict:
+            value = self.dict[key]
+            return value
+        else:
+            self.dict[key] = default
             return default
 
 
