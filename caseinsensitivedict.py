@@ -3,9 +3,11 @@ class CaseInsensitiveDict:
         self.dict = {}
 
     def __getitem__(self, key):
-        print('I was called.')
         for i in self.dict:
-            if i.lower() == key.lower():
+            if isinstance(i, str) and isinstance(key, str):
+                if i.lower() == key.lower():
+                    return self.dict[i]
+            elif i == key:
                 return self.dict[i]
         raise KeyError('That is not correct.')
 
@@ -13,7 +15,11 @@ class CaseInsensitiveDict:
         # key = 'Snake' value = 5
         existing = None
         for i in self.dict:
-            if i.lower() == key.lower():
+            if isinstance(i, str) and isinstance(key, str):
+                if i.lower() == key.lower():
+                    existing = i
+                    break
+            elif i == key:
                 existing = i
                 break
         if existing:
@@ -68,7 +74,7 @@ class CaseInsensitiveDict:
         for i in self.dict:
             t = self.dict[i]
             value_list.append(t)
-            return value_list
+        return value_list
 
     def items(self):
         items_list = []
@@ -78,16 +84,18 @@ class CaseInsensitiveDict:
         return items_list
 
     def popitem(self):
-        for key in self.dict:
-            value = self.dict[key]
-            item = (key, value)
-            return item
+        return self.dict.popitem()
+
 
     def get(self, key, default=None):
-        if key in self.dict:
-            return self.dict[key]
-        else:
-            return default
+        for item in self.dict:
+            if isinstance(item, str) and isinstance(key, str):
+                if item.lower() == key.lower():
+                    return self.dict[item]
+            elif item == key:
+                return self.dict[item]
+        return default
+
 
     def setdefault(self, key, default=None):
         if key in self.dict:

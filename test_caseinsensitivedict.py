@@ -15,7 +15,9 @@ class TestCaseInsensitiveDict(TestCase):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
         myinstance['KAISA'] = 'daughter of the void'
+        myinstance[5] = 10
         self.assertEqual(myinstance['Kaisa'], 'daughter of the void')
+        self.assertEqual(myinstance[5], 10)
 
     def test_list(self):
         myinstance = CaseInsensitiveDict()
@@ -70,14 +72,15 @@ class TestCaseInsensitiveDict(TestCase):
     def test_get(self):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
-        myinstance['kaisa'] = 5
+        myinstance[2] = 4
         self.assertIn('Kaisa', myinstance)
         self.assertNotIn('Jhin', myinstance)
         value = myinstance.get('Kaisa')
-        nonvalue = myinstance.get('Jhin')
+        nonevalue = myinstance.get('Jhin')
+        lctestvalue = myinstance.get('kaisa')
         self.assertEqual(value, 5)
-        self.assertEqual(nonvalue, None)
-        self.assertEqual(myinstance['kaisa'], 5)
+        self.assertEqual(nonevalue, None)
+        self.assertEqual(lctestvalue, 5)
 
 
     def test_items(self):
@@ -111,10 +114,18 @@ class TestCaseInsensitiveDict(TestCase):
     def test_popitem(self):
         myinstance = CaseInsensitiveDict()
         myinstance['Kaisa'] = 5
-        self.assertIn('Kaisa', myinstance)
+        myinstance['Jhin'] = 4
+        myinstance['Qiyana'] = 'Yun Tal'
         item = myinstance.popitem()
-        self.assertEqual(item, ('Kaisa', 5))
-        self.assertNotIn(item, myinstance)
+        self.assertEqual(item, ('Qiyana', 'Yun Tal'))
+        self.assertNotIn('Qiyana', myinstance)
+        item2 = myinstance.popitem()
+        self.assertEqual(item2, ('Jhin', 4))
+        self.assertNotIn('Jhin', myinstance)
+        item3 = myinstance.popitem()
+        self.assertEqual(item3, ('Kaisa', 5))
+        self.assertNotIn('Kaisa', myinstance)
+        self.assertEqual(myinstance, {})
 
         # setdefault(key[, default])
         #     If key is in the dictionary, return its value. If not, insert key
@@ -126,8 +137,8 @@ class TestCaseInsensitiveDict(TestCase):
         myinstance['Kaisa'] = 5
         item = myinstance.setdefault('Kaisa')
         self.assertEqual(item, 5)
-        default_item = myinstance.setdefault('Jhin')
-        self.assertEqual(default_item, None)
+        default_item = myinstance.setdefault('Jhin', 4)
+        self.assertEqual(default_item, 4)
 
         # update([other])
         #     Update the dictionary with the key/value pairs from other,
