@@ -1,30 +1,82 @@
+# vim: ts=4 sts=4 sw=4
+
+def isequal(x, y):
+    """
+    If x and y are both str, returns whether x.lower() == y.lower().
+    Otherwise, returns whether x == y.
+    """
+    if isinstance(x, str) and isinstance(y, str) and x.lower() == y.lower():
+        return True
+    elif x == y:
+        return True
+    else:
+        return False
+
+
 class CaseInsensitiveDict:
-    def __init__(self):
-        self.dict = {}
+    def __init__(self, other=(), **kwargs):
+        self.dict = dict()
+        self.update(other, **kwargs)
+
+    def __contains__(self, key):
+        try:
+            self[key]
+        except KeyError:
+            return False
+        else:
+            return True
+
+    def __delitem__(self, key):
+        for i in self.dict:
+            if isequal(i, key):
+                break
+        else:
+            raise KeyError(key)
+
+        del self.dict[i]
 
     def __getitem__(self, key):
         for i in self.dict:
-            if isinstance(i, str) and isinstance(key, str):
-                if i.lower() == key.lower():
-                    return self.dict[i]
-            elif i == key:
+            if isequal(i, key):
                 return self.dict[i]
-        raise KeyError('That is not correct.')
+
+        raise KeyError(key)
 
     def __setitem__(self, key, value):
-        # key = 'Snake' value = 5
-        existing = None
         for i in self.dict:
-            if isinstance(i, str) and isinstance(key, str):
-                if i.lower() == key.lower():
-                    existing = i
-                    break
-            elif i == key:
-                existing = i
+            if isequal(i, key):
+                del self.dict[i]
                 break
-        if existing:
-            del self.dict[existing]
+
         self.dict[key] = value
+
+    def __eq__(self, other):
+        if not isinstance(other, (dict, CaseInsensitiveDict)):
+            return False
+
+        # Special case check: if other has two keys that only differ by case,
+        # self can't possibly be equal to it.
+        other_keys = []
+        for key in other:
+            if isinstance(key, str):
+                key = key.lower()
+            other_keys.append(key)
+
+        if len(other_keys) > len(set(other_keys)):
+            return False
+
+        if len(self) != len(other):
+            return False
+
+        for key in self:
+            for other_key in other:
+                if isequal(other_key, key):
+                    if self[key] == other[other_key]:
+                        break
+                    else:
+                        return False
+
+        return True
 
     def __iter__(self):
         return iter(self.dict)
@@ -32,98 +84,47 @@ class CaseInsensitiveDict:
     def __len__(self):
         return len(self.dict)
 
-    def __delitem__(self, key):
-        existing = None
-        for i in self.dict:
-            if i.lower() == key.lower():
-                existing = i
-                break
-        if existing:
-            del self.dict[existing]
-        else:
-            raise KeyError
-
-    def __eq__(self, other):
-        for i in self:
-            self_value = self[i]
-            if i in other:
-                other_value = other[i]
-            else:
-                return False
-            if self_value != other_value:
-                return False
-        return True
-
     def clear(self):
-        self.dict = {}
+        self.dict.clear()
 
     def copy(self):
-        myinstance = CaseInsensitiveDict()
-        for key in self:
-            myinstance[key] = self[key]
-        return myinstance
-
-    def keys(self):
-        key_list = []
-        for key in self:
-            key_list.append(key)
-            return key_list
-
-    def values(self):
-        value_list = []
-        for i in self.dict:
-            t = self.dict[i]
-            value_list.append(t)
-        return value_list
+        return CaseInsensitiveDict(self)
 
     def items(self):
-        items_list = []
-        for i in self.dict:
-            t = (i, self.dict[i])
-            items_list.append(t)
-        return items_list
+        return self.dict.items()
+
+    def keys(self):
+        return self.dict.keys()
 
     def popitem(self):
         return self.dict.popitem()
 
+    def values(self):
+        return self.dict.values()
 
     def get(self, key, default=None):
-        for item in self.dict:
-            if isinstance(item, str) and isinstance(key, str):
-                if item.lower() == key.lower():
-                    return self.dict[item]
-            elif item == key:
-                return self.dict[item]
-        return default
-
-
-    def setdefault(self, key, default=None):
-        if key in self.dict:
-            value = self.dict[key]
-            return value
-        else:
-            self.dict[key] = default
+        try:
+            return self[key]
+        except KeyError:
             return default
 
+    def setdefault(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            self[key] = default
+            return default
 
+    def update(self, other=(), **kwargs):
+        if isinstance(other, (dict, CaseInsensitiveDict)):
+            for key in other:
+                self[key] = other[key]
+        elif hasattr(other, 'keys'):
+            for key in other.keys():
+                self[key] = other[key]
+        else:
+            for key, value in other:
+                self[key] = value
 
-if __name__ == '__main__':
-    myinstance = CaseInsensitiveDict()
-    myvariable = myinstance['jhin']
-    # myvariable = myinstance.__getitem__('jhin')
-    # myvariable = myinstance.__getitem__(myinstance, 'jhin')
-    print(f'myvariable is {myvariable}')
-    myinstance['Kaisa'] = 5
-    print(f'Kaisa is', myinstance['Kaisa'])
-    myinstance['KAISA'] = 'daughter of the void'
-    print(f'Kaisa is now', myinstance['Kaisa'])
-    # 1. Get a value by key
-    # 2. Set a value by key
-    # 3. Delete a value by key
-    # j['Jhin'] = 4
-    # j = {'Key': (value1, value2), 'Jhin': 4}
-    # j['jhin'] = 5
-    # j = {'Key': (value1, value2), 'Jhin': 4, 'jhin': 5}
-    # j = {'Key': (value1, value2), 'jhin': 5}
-    # del j['jhin']
-    # j = {'Key': (value1, value2)}
+        for key, value in kwargs.items():
+            self[key] = value
